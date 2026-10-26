@@ -1,0 +1,29 @@
+# Segredos: chaves da Twitch/IGDB ficam só no .env local (modelo em .env.example)
+.env
+.env.*
+!.env.example
+
+# Ambiente e build
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+
+# Dados e logs: regeneráveis com `gsp igdb/wikidata/build`; o cache HTTP pode ter respostas brutas
+data/
+logs/
+
+# Notebooks e editores
+.ipynb_checkpoints/
+.vscode/
+.idea/
+
+# Configuração local do Claude Code (a documentação do projeto em .claude/*.md é versionada)
+.claude/settings.local.json
+
+# Sistema
+*:Zone.Identifier
+.DS_Store
