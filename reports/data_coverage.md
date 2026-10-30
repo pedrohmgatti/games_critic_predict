@@ -1,7 +1,7 @@
 # Cobertura do dataset de notas
 
-- Jogos no dataset: **21,936** (14,734 lançados com target, 7,202 por lançar com hype)
-- Ligados ao Wikidata: 16,814 (slug 16,420, Steam 394)
+- Jogos no dataset: **21,922** (14,734 lançados com target, 7,188 por lançar com hype)
+- Ligados ao Wikidata: 16,810 (slug 16,416, Steam 394)
 
 ## Target: `igdb_critic_score`
 

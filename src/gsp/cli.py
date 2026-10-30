@@ -2,7 +2,7 @@
 
     gsp igdb         # 1. IGDB: catálogo, target (nota da crítica), hypes e app ids da Steam
     gsp wikidata     # 2. Wikidata: metadados, IDs e notas de agregadores (sem chave)
-    gsp build        # 3. junta tudo -> data/processed/games_scores.parquet + relatório
+    gsp build        # 3. junta tudo -> data/processed/games_scores.parquet, history_pool.parquet + relatório
     gsp all          # tudo em sequência
 """
 

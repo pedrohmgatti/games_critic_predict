@@ -77,7 +77,9 @@ qualidade do target, nunca como feature.
 | `data/raw/wikidata_games.parquet` | ~181 mil itens: metadados e IDs externos |
 | `data/raw/wikidata_review_scores.parquet` | uma declaração de nota (P444) por linha: veículo, método, plataforma, nº de críticas, data, nota em 0–100 |
 | `data/processed/games_scores.parquet` (+ `.csv`) | **dataset**: um jogo por linha, target + validação + features |
+| `data/processed/history_pool.parquet` | jogos já lançados com nota do IGDB, OpenCritic ou Metacritic, inclusive os sem target (o passado que as features de histórico consultam) |
 | `data/processed/features.parquet` | matriz de features da base da modelagem e dos jogos por lançar, gerada por `notebooks/02_features.ipynb` |
+| `data/processed/features_linear.parquet` | a mesma matriz para modelos lineares: sem as colunas colineares e com flags `*_ausente` (imputação pela média do treino no notebook 03) |
 | `reports/data_coverage.md` | distribuição do target, qualidade por nº de críticos, cobertura por ano |
 
 ### Quem entra no dataset

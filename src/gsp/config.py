@@ -25,6 +25,7 @@ IGDB_STEAM = RAW / "igdb_steam_ids.parquet"
 WIKIDATA_GAMES = RAW / "wikidata_games.parquet"
 WIKIDATA_SCORES = RAW / "wikidata_review_scores.parquet"
 DATASET = PROCESSED / "games_scores.parquet"
+HISTORY_POOL = PROCESSED / "history_pool.parquet"
 
 # Polidez com os servidores: intervalo mínimo entre requisições (segundos)
 WIKIDATA_MIN_INTERVAL = float(os.getenv("WIKIDATA_MIN_INTERVAL", "2.0"))

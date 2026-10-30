@@ -81,6 +81,24 @@ def select_games(ig: pd.DataFrame, today: pd.Timestamp | None = None) -> pd.Data
     return g[keep]
 
 
+def history_pool(ig: pd.DataFrame, val: pd.DataFrame, today: pd.Timestamp | None = None) -> pd.DataFrame:
+    """Jogos já lançados com alguma nota da crítica: IGDB, OpenCritic ou Metacritic.
+
+    É o passado que as features de histórico consultam. Inclui jogos sem nota no IGDB, como o
+    Ocarina of Time de 1998 (só Metacritic), que ficam fora do dataset por não terem target.
+    `val` é a saída de `wikidata_validation` já com `igdb_id` (via `link_wikidata_igdb`).
+    """
+    today = today or pd.Timestamp.today().normalize()
+    g = ig[ig["game_type"].isin(GAME_TYPES) & (ig["first_release_date"] <= today)
+           & (ig["game_status"].fillna("") != "Cancelled")]
+    g = g.merge(val, on="igdb_id", how="left")
+    g = g[g[["critic_score", "oc_top_avg", "mc_score"]].notna().any(axis=1)]
+    cols = ["igdb_id", "name", "first_release_date", "igdb_critic_score", "igdb_critic_n", "oc_top_avg",
+            "mc_score", "developers", "publishers", "franchises", "collections", "wd_series"]
+    return (g.rename(columns={"critic_score": "igdb_critic_score", "critic_n": "igdb_critic_n"})[cols]
+            .sort_values("first_release_date").reset_index(drop=True))
+
+
 def build() -> pd.DataFrame:
     ig = pd.read_parquet(config.IGDB_GAMES)
     wd = pd.read_parquet(config.WIKIDATA_GAMES)
@@ -101,6 +119,12 @@ def build() -> pd.DataFrame:
     df.to_parquet(config.DATASET, index=False)
     df.to_csv(config.DATASET.with_suffix(".csv"), index=False)
     log.info("dataset: %d jogos -> %s", len(df), config.DATASET)
+
+    by_igdb = (links.merge(val, on="wd_qid").merge(wd_cols, on="wd_qid", how="left")
+               [["igdb_id", "oc_top_avg", "mc_score", "wd_series"]])
+    pool = history_pool(ig, by_igdb)
+    pool.to_parquet(config.HISTORY_POOL, index=False)
+    log.info("histórico: %d jogos lançados com nota -> %s", len(pool), config.HISTORY_POOL)
     (config.REPORTS / "data_coverage.md").write_text(coverage_report(df), encoding="utf-8")
     return df
 

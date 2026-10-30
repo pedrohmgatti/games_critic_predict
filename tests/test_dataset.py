@@ -1,6 +1,7 @@
 import pandas as pd
 
-from gsp.dataset import METACRITIC, OPENCRITIC, link_wikidata_igdb, select_games, wikidata_validation
+from gsp.dataset import (METACRITIC, OPENCRITIC, history_pool, link_wikidata_igdb, select_games,
+                         wikidata_validation)
 
 
 def _ig(rows):
@@ -58,3 +59,21 @@ def test_select_games_keeps_target_and_upcoming_with_hype():
     g = select_games(ig, today=today).set_index("igdb_id")
     assert sorted(g.index) == [1, 3]
     assert g.loc[3, "is_upcoming"] and not g.loc[1, "is_upcoming"]
+
+
+def test_history_pool_keeps_released_games_with_any_critic_score():
+    today = pd.Timestamp("2026-10-25")
+    ig = _ig([
+        (1, "a", "Main Game", None, pd.Timestamp("2020-01-01"), None, 80.0),   # nota IGDB
+        (2, "oot", "Main Game", None, pd.Timestamp("1998-11-21"), None, None),  # só Metacritic
+        (3, "c", "Main Game", None, pd.Timestamp("2020-01-01"), None, None),   # sem nota nenhuma
+        (4, "gta-vi", "Main Game", None, pd.Timestamp("2026-11-19"), 1111, None),  # não lançado
+        (5, "e", "DLC", None, pd.Timestamp("2020-01-01"), None, 90.0),
+    ]).assign(critic_n=[5, None, None, None, 3], name=list("abcde"), developers=None, publishers=None,
+              franchises=None, collections=None)
+    val = pd.DataFrame({"igdb_id": [2, 4], "oc_top_avg": [None, None], "mc_score": [99.0, 97.0],
+                        "wd_series": ["Zelda", "GTA"]})
+    pool = history_pool(ig, val, today=today).set_index("igdb_id")
+    assert list(pool.index) == [2, 1]  # ordenado por data
+    assert pool.loc[2, "mc_score"] == 99 and pool.loc[2, "wd_series"] == "Zelda"
+    assert pool.loc[1, "igdb_critic_score"] == 80

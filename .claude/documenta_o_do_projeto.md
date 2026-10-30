@@ -199,5 +199,7 @@ Listas com vários valores vêm separadas por `|`.
 - [x] Definição do corte mínimo de críticos (4+) e do recorte temporal (2010+).
 - [x] Engenharia de features sem vazamento, primeira versão (`notebooks/02_features.ipynb` →
   `data/processed/features.parquet`).
-- [ ] Baselines, modelos e validação temporal.
-- [ ] Previsão do GTA VI e registro público antes do lançamento.
+- [x] Baselines, modelos e validação temporal (`notebooks/03_modelos.ipynb`): treino 2010–2021,
+  validação 2022–2023, teste jan/2024–ago/2026, conferência em set–out 2026. LightGBM escolhido.
+- [x] Previsão do GTA VI e do remake de Zelda: Ocarina of Time (`notebooks/03_modelos.ipynb`).
+- [ ] Registro público das previsões antes de 05/11 (Zelda) e 19/11/2026 (GTA VI).

@@ -1,0 +1,7 @@
+modelo,val_mae,val_rmse,val_vies,teste_mae,teste_rmse,teste_vies
+Média do treino,8.88,10.74,4.51,9.52,10.98,7.23
+Histórico,8.18,10.07,3.55,8.26,9.74,5.68
+Ridge,7.53,9.3,3.13,6.91,8.56,3.92
+Lasso,7.68,9.5,3.31,6.83,8.44,3.88
+Random Forest,7.47,9.3,2.61,6.66,8.34,3.34
+LightGBM,7.32,9.26,2.22,5.76,7.54,1.5
